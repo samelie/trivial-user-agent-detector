@@ -8,6 +8,8 @@ export type IOSVersion = number | false;
 
 export type IEVersion = number;
 
+export type BrowserVersion = number | false;
+
 export type RenderingEngine = "Blink" | "WebKit" | "Gecko" | "Trident" | "EdgeHTML" | "Presto" | "unknown";
 
 export type CPUArchitecture = "amd64" | "arm64" | "arm" | "armhf" | "ia32" | "sparc" | "unknown";
@@ -79,7 +81,14 @@ export interface BrowserDetectionResult {
     readonly isFirefox: boolean;
     readonly isChrome: boolean;
     readonly isSafari: boolean;
+    readonly isEdge: boolean;
+    readonly isOpera: boolean;
     readonly webp: boolean;
+    readonly chromeVersion: BrowserVersion;
+    readonly firefoxVersion: BrowserVersion;
+    readonly safariVersion: BrowserVersion;
+    readonly edgeVersion: BrowserVersion;
+    readonly operaVersion: BrowserVersion;
 }
 
 export interface CapabilityDetectionResult {

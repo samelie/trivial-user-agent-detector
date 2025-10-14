@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { detectIOS } from "../src/ios-detection.ts";
+import { detectIOS } from "../src/ios-detection";
 
 describe("iOS Detection", () => {
     describe("iPhone detection", () => {

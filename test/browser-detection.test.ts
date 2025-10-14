@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { detectBrowser, detectIE } from "../src/browser-detection.ts";
+import { detectBrowser, detectIE } from "../src/browser-detection";
 
 describe("browser Detection", () => {
     describe("chrome detection", () => {

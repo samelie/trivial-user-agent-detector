@@ -2,7 +2,7 @@
  * Browser detection utilities
  */
 
-import type { BrowserDetectionResult, IEDetectionResult, IEVersion } from "./types.ts";
+import type { BrowserDetectionResult, BrowserVersion, IEDetectionResult, IEVersion } from "./types.ts";
 
 /**
  * Detects Internet Explorer version
@@ -64,6 +64,84 @@ const createIEDetectionResult = (version: IEVersion): IEDetectionResult => {
 };
 
 /**
+ * Extracts Chrome version from user agent
+ */
+const extractChromeVersion = (userAgent: string): BrowserVersion => {
+    const match = /\bChrome\/(\d+)/i.exec(userAgent);
+    if (match && match[1] !== undefined) {
+        const version = Number.parseInt(match[1], 10);
+        return Number.isNaN(version) ? false : version;
+    }
+    return false;
+};
+
+/**
+ * Extracts Firefox version from user agent
+ */
+const extractFirefoxVersion = (userAgent: string): BrowserVersion => {
+    const match = /\bFirefox\/(\d+)/i.exec(userAgent);
+    if (match && match[1] !== undefined) {
+        const version = Number.parseInt(match[1], 10);
+        return Number.isNaN(version) ? false : version;
+    }
+    return false;
+};
+
+/**
+ * Extracts Safari version from user agent
+ */
+const extractSafariVersion = (userAgent: string): BrowserVersion => {
+    const match = /\bVersion\/(\d+)/i.exec(userAgent);
+    if (match && match[1] !== undefined && /Safari/i.test(userAgent)) {
+        const version = Number.parseInt(match[1], 10);
+        return Number.isNaN(version) ? false : version;
+    }
+    return false;
+};
+
+/**
+ * Extracts Edge version from user agent (both Legacy and Chromium)
+ */
+const extractEdgeVersion = (userAgent: string): BrowserVersion => {
+    // Chromium Edge: Edg/119.0.0.0
+    let match = /\bEdg\/(\d+)/i.exec(userAgent);
+    if (match && match[1] !== undefined) {
+        const version = Number.parseInt(match[1], 10);
+        return Number.isNaN(version) ? false : version;
+    }
+
+    // Legacy Edge: Edge/18.17763
+    match = /\bEdge\/(\d+)/i.exec(userAgent);
+    if (match && match[1] !== undefined) {
+        const version = Number.parseInt(match[1], 10);
+        return Number.isNaN(version) ? false : version;
+    }
+
+    return false;
+};
+
+/**
+ * Extracts Opera version from user agent
+ */
+const extractOperaVersion = (userAgent: string): BrowserVersion => {
+    // Modern Opera: OPR/105.0.0.0
+    let match = /\bOPR\/(\d+)/i.exec(userAgent);
+    if (match && match[1] !== undefined) {
+        const version = Number.parseInt(match[1], 10);
+        return Number.isNaN(version) ? false : version;
+    }
+
+    // Old Opera: Opera/9.80 or Opera 12
+    match = /\bOpera[\s/](\d+)/i.exec(userAgent);
+    if (match && match[1] !== undefined) {
+        const version = Number.parseInt(match[1], 10);
+        return Number.isNaN(version) ? false : version;
+    }
+
+    return false;
+};
+
+/**
  * Detects if browser is Chrome
  */
 const detectChrome = (chrome: unknown, vendor?: string): boolean => {
@@ -79,15 +157,31 @@ export const detectBrowser = (
     vendor?: string,
 ): BrowserDetectionResult => {
     const isFirefox = userAgent.toLowerCase().includes("firefox");
-    const isChrome = detectChrome(chrome, vendor);
-    const isSafari = /^(?:(?!chrome).)*safari/i.test(userAgent);
-    const webp = isChrome && !isSafari;
+    const isEdge = /\b(?:Edg|Edge)\//i.test(userAgent);
+    const isOpera = /\b(?:OPR|Opera)\//i.test(userAgent);
+    const isChrome = detectChrome(chrome, vendor) && !isEdge && !isOpera;
+    const isSafari = /^(?:(?!chrome).)*safari/i.test(userAgent) && !isEdge && !isOpera;
+    const webp = (isChrome || isEdge || isOpera) && !isSafari;
+
+    // Extract versions
+    const chromeVersion = isChrome ? extractChromeVersion(userAgent) : false;
+    const firefoxVersion = isFirefox ? extractFirefoxVersion(userAgent) : false;
+    const safariVersion = isSafari ? extractSafariVersion(userAgent) : false;
+    const edgeVersion = isEdge ? extractEdgeVersion(userAgent) : false;
+    const operaVersion = isOpera ? extractOperaVersion(userAgent) : false;
 
     return {
         isFirefox,
         isChrome,
         isSafari,
+        isEdge,
+        isOpera,
         webp,
+        chromeVersion,
+        firefoxVersion,
+        safariVersion,
+        edgeVersion,
+        operaVersion,
     } as const;
 };
 
@@ -111,4 +205,73 @@ export const detectIEFromEnvironment = (): IEDetectionResult => {
     }
 
     return detectIE(navigator.userAgent, navigator.appName);
+};
+
+/**
+ * Browser version comparison helpers
+ */
+
+/**
+ * Checks if browser version is greater than specified version
+ */
+export const isBrowserVersionGreaterThan = (
+    currentVersion: BrowserVersion,
+    compareVersion: number,
+): boolean => {
+    return typeof currentVersion === "number" && currentVersion > compareVersion;
+};
+
+/**
+ * Checks if browser version is greater than or equal to specified version
+ */
+export const isBrowserVersionGreaterThanOrEqual = (
+    currentVersion: BrowserVersion,
+    compareVersion: number,
+): boolean => {
+    return typeof currentVersion === "number" && currentVersion >= compareVersion;
+};
+
+/**
+ * Checks if browser version is less than specified version
+ */
+export const isBrowserVersionLessThan = (
+    currentVersion: BrowserVersion,
+    compareVersion: number,
+): boolean => {
+    return typeof currentVersion === "number" && currentVersion < compareVersion;
+};
+
+/**
+ * Checks if browser version is less than or equal to specified version
+ */
+export const isBrowserVersionLessThanOrEqual = (
+    currentVersion: BrowserVersion,
+    compareVersion: number,
+): boolean => {
+    return typeof currentVersion === "number" && currentVersion <= compareVersion;
+};
+
+/**
+ * Checks if browser version is equal to specified version
+ */
+export const isBrowserVersionEqual = (
+    currentVersion: BrowserVersion,
+    compareVersion: number,
+): boolean => {
+    return currentVersion === compareVersion;
+};
+
+/**
+ * Checks if browser version is in a range (inclusive)
+ */
+export const isBrowserVersionInRange = (
+    currentVersion: BrowserVersion,
+    minVersion: number,
+    maxVersion: number,
+): boolean => {
+    return (
+        typeof currentVersion === "number" &&
+        currentVersion >= minVersion &&
+        currentVersion <= maxVersion
+    );
 };

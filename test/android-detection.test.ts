@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { detectAndroid } from "../src/android-detection.ts";
+import { detectAndroid } from "../src/android-detection";
 
 describe("android Detection", () => {
     describe("modern Android versions", () => {

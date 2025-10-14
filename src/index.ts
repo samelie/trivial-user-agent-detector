@@ -46,7 +46,16 @@ import type {
     PixelRatioResult,
 } from "./types.ts";
 import { detectAndroid } from "./android-detection.ts";
-import { detectBrowser, detectIE } from "./browser-detection.ts";
+import {
+    detectBrowser,
+    detectIE,
+    isBrowserVersionEqual,
+    isBrowserVersionGreaterThan,
+    isBrowserVersionGreaterThanOrEqual,
+    isBrowserVersionInRange,
+    isBrowserVersionLessThan,
+    isBrowserVersionLessThanOrEqual,
+} from "./browser-detection.ts";
 import {
     detectCapabilitiesFromEnvironment,
     detectDOMFeaturesFromEnvironment,
@@ -133,7 +142,7 @@ export interface Detector {
     detectIE: () => Readonly<IEDetectionResult>;
 
     /**
-     * Detect browser (Chrome, Firefox, Safari)
+     * Detect browser (Chrome, Firefox, Safari, Edge, Opera) with versions
      */
     detectBrowser: () => Readonly<BrowserDetectionResult>;
 
@@ -166,6 +175,36 @@ export interface Detector {
      * Detect client hints (async) - modern user agent API
      */
     detectClientHints: () => Promise<Readonly<ClientHintsResult>>;
+
+    /**
+     * Check if browser version is greater than specified version
+     */
+    isBrowserVersionGreaterThan: (currentVersion: number | false, compareVersion: number) => boolean;
+
+    /**
+     * Check if browser version is greater than or equal to specified version
+     */
+    isBrowserVersionGreaterThanOrEqual: (currentVersion: number | false, compareVersion: number) => boolean;
+
+    /**
+     * Check if browser version is less than specified version
+     */
+    isBrowserVersionLessThan: (currentVersion: number | false, compareVersion: number) => boolean;
+
+    /**
+     * Check if browser version is less than or equal to specified version
+     */
+    isBrowserVersionLessThanOrEqual: (currentVersion: number | false, compareVersion: number) => boolean;
+
+    /**
+     * Check if browser version is equal to specified version
+     */
+    isBrowserVersionEqual: (currentVersion: number | false, compareVersion: number) => boolean;
+
+    /**
+     * Check if browser version is in a range (inclusive)
+     */
+    isBrowserVersionInRange: (currentVersion: number | false, minVersion: number, maxVersion: number) => boolean;
 }
 
 /**
@@ -182,6 +221,11 @@ export interface Detector {
  * // Or get specific features
  * const browser = detector.detectBrowser();
  * const device = detector.detectDevice();
+ *
+ * // Use version comparison helpers
+ * if (detector.isBrowserVersionGreaterThanOrEqual(browser.chromeVersion, 100)) {
+ *     console.log("Chrome 100+ detected");
+ * }
  * ```
  */
 export const createDetector = (): Detector => {
@@ -309,6 +353,14 @@ export const createDetector = (): Detector => {
         detectEngine: () => Object.freeze(getEngine()),
         detectCPU: () => Object.freeze(getCPU()),
         detectClientHints: async () => Object.freeze(await detectClientHintsAsync()),
+
+        // Version comparison helpers
+        isBrowserVersionGreaterThan,
+        isBrowserVersionGreaterThanOrEqual,
+        isBrowserVersionLessThan,
+        isBrowserVersionLessThanOrEqual,
+        isBrowserVersionEqual,
+        isBrowserVersionInRange,
     };
 };
 
@@ -321,6 +373,7 @@ export type {
     BrowserDetectionResult,
     BrowserDocument,
     BrowserNavigator,
+    BrowserVersion,
     BrowserWindow,
     CapabilityDetectionResult,
     ClientHintsBrand,

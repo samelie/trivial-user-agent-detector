@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { detectCPU } from "../src/cpu-detection.ts";
+import { detectCPU } from "../src/cpu-detection";
 
 describe("cPU Architecture Detection", () => {
     describe("aMD64 / x86_64 detection", () => {

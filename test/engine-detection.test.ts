@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { detectEngine } from "../src/engine-detection.ts";
+import { detectEngine } from "../src/engine-detection";
 
 describe("rendering Engine Detection", () => {
     describe("blink engine", () => {
