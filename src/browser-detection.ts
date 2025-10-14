@@ -2,7 +2,7 @@
  * Browser detection utilities
  */
 
-import type { BrowserDetectionResult, BrowserVersion, IEDetectionResult, IEVersion } from "./types.ts";
+import type { BrowserDetectionResult, BrowserName, BrowserVersion, IEDetectionResult, IEVersion } from "./types.ts";
 
 /**
  * Detects Internet Explorer version
@@ -149,6 +149,24 @@ const detectChrome = (chrome: unknown, vendor?: string): boolean => {
 };
 
 /**
+ * Determines browser name from detection flags
+ */
+const determineBrowserName = (
+    isChrome: boolean,
+    isFirefox: boolean,
+    isSafari: boolean,
+    isEdge: boolean,
+    isOpera: boolean,
+): BrowserName => {
+    if (isChrome) return "Chrome";
+    if (isFirefox) return "Firefox";
+    if (isSafari) return "Safari";
+    if (isEdge) return "Edge";
+    if (isOpera) return "Opera";
+    return "unknown";
+};
+
+/**
  * Pure function to detect all browser-related information
  */
 export const detectBrowser = (
@@ -162,6 +180,9 @@ export const detectBrowser = (
     const isChrome = detectChrome(chrome, vendor) && !isEdge && !isOpera;
     const isSafari = /^(?:(?!chrome).)*safari/i.test(userAgent) && !isEdge && !isOpera;
     const webp = (isChrome || isEdge || isOpera) && !isSafari;
+
+    // Determine browser name
+    const browserName = determineBrowserName(isChrome, isFirefox, isSafari, isEdge, isOpera);
 
     // Extract versions
     const chromeVersion = isChrome ? extractChromeVersion(userAgent) : false;
@@ -177,6 +198,7 @@ export const detectBrowser = (
         isEdge,
         isOpera,
         webp,
+        browserName,
         chromeVersion,
         firefoxVersion,
         safariVersion,

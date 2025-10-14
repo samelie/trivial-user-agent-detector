@@ -41,13 +41,34 @@ console.log(all);
 
 // Or use individual methods
 const browser = detector.detectBrowser();
+console.log(browser.browserName);     // "Chrome"
 console.log(browser.isChrome);        // true
 console.log(browser.chromeVersion);   // 119
+
+// Or use the convenience method
+console.log(detector.getBrowserName()); // "Chrome" | "Firefox" | "Safari" | "Edge" | "Opera" | "IE" | "unknown"
 
 const device = detector.detectDevice();
 console.log(device.isMobile);         // true
 console.log(device.device);           // "mobile"
 ```
+
+## Browser Name
+
+Get the browser name as a simple string:
+
+```typescript
+const detector = createDetector();
+const browser = detector.detectBrowser();
+
+// Get browser name from detection result
+console.log(browser.browserName); // "Chrome" | "Firefox" | "Safari" | "Edge" | "Opera" | "unknown"
+
+// Or use the convenience method (includes IE detection)
+console.log(detector.getBrowserName()); // "Chrome" | "Firefox" | "Safari" | "Edge" | "Opera" | "IE" | "unknown"
+```
+
+The `browserName` property on `BrowserDetectionResult` provides a clean way to get the detected browser name without checking multiple boolean flags. The `getBrowserName()` method also checks for Internet Explorer.
 
 ## Browser Version Detection
 
@@ -195,6 +216,9 @@ interface Detector {
     isBrowserVersionLessThanOrEqual(version: number | false, compare: number): boolean;
     isBrowserVersionEqual(version: number | false, compare: number): boolean;
     isBrowserVersionInRange(version: number | false, min: number, max: number): boolean;
+
+    // Browser name helper
+    getBrowserName(): BrowserName; // Includes IE detection
 }
 ```
 
@@ -207,7 +231,8 @@ interface BrowserDetectionResult {
     isSafari: boolean;
     isEdge: boolean;
     isOpera: boolean;
-    webp: boolean;              // WebP format support
+    webp: boolean;                    // WebP format support
+    browserName: BrowserName;          // "Chrome" | "Firefox" | "Safari" | "Edge" | "Opera" | "unknown"
     chromeVersion: number | false;
     firefoxVersion: number | false;
     safariVersion: number | false;

@@ -3,6 +3,50 @@ import { detectBrowser } from "../src/browser-detection";
 import { createDetector } from "../src/index";
 
 describe("browser Version Detection", () => {
+    describe("browser name detection", () => {
+        it("should return 'Chrome' for Chrome browser", () => {
+            const ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36";
+            const result = detectBrowser(ua, { chrome: true }, "Google Inc.");
+
+            expect(result.browserName).toBe("Chrome");
+        });
+
+        it("should return 'Firefox' for Firefox browser", () => {
+            const ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:120.0) Gecko/20100101 Firefox/120.0";
+            const result = detectBrowser(ua, undefined, undefined);
+
+            expect(result.browserName).toBe("Firefox");
+        });
+
+        it("should return 'Safari' for Safari browser", () => {
+            const ua = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.1 Safari/605.1.15";
+            const result = detectBrowser(ua, undefined, "Apple Computer, Inc.");
+
+            expect(result.browserName).toBe("Safari");
+        });
+
+        it("should return 'Edge' for Edge browser", () => {
+            const ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 Edg/119.0.0.0";
+            const result = detectBrowser(ua, undefined, undefined);
+
+            expect(result.browserName).toBe("Edge");
+        });
+
+        it("should return 'Opera' for Opera browser", () => {
+            const ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 OPR/105.0.0.0";
+            const result = detectBrowser(ua, undefined, undefined);
+
+            expect(result.browserName).toBe("Opera");
+        });
+
+        it("should return 'unknown' for unrecognized browser", () => {
+            const ua = "CustomBrowser/1.0";
+            const result = detectBrowser(ua, undefined, undefined);
+
+            expect(result.browserName).toBe("unknown");
+        });
+    });
+
     describe("chrome version", () => {
         it("should extract Chrome version from Windows", () => {
             const ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36";
@@ -10,6 +54,7 @@ describe("browser Version Detection", () => {
 
             expect(result.isChrome).toBe(true);
             expect(result.chromeVersion).toBe(119);
+            expect(result.browserName).toBe("Chrome");
         });
 
         it("should extract Chrome version from macOS", () => {
@@ -352,6 +397,16 @@ describe("browser Version Comparison Helpers", () => {
 
             const hasBug = detector.isBrowserVersionEqual(result.edgeVersion, 18);
             expect(hasBug).toBe(true);
+        });
+    });
+
+    describe("getBrowserName helper", () => {
+        it("should return browser name from detector", () => {
+            const detector = createDetector();
+            const browserName = detector.getBrowserName();
+
+            // In test environment, should be one of the valid browser names
+            expect(["Chrome", "Firefox", "Safari", "Edge", "Opera", "IE", "unknown"]).toContain(browserName);
         });
     });
 });

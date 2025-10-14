@@ -34,6 +34,7 @@
 import type {
     AndroidDetectionResult,
     BrowserDetectionResult,
+    BrowserName,
     CapabilityDetectionResult,
     ClientHintsResult,
     CPUDetectionResult,
@@ -205,6 +206,12 @@ export interface Detector {
      * Check if browser version is in a range (inclusive)
      */
     isBrowserVersionInRange: (currentVersion: number | false, minVersion: number, maxVersion: number) => boolean;
+
+    /**
+     * Get browser name as a string (includes IE detection)
+     * @returns Browser name: "Chrome" | "Firefox" | "Safari" | "Edge" | "Opera" | "IE" | "unknown"
+     */
+    getBrowserName: () => BrowserName;
 }
 
 /**
@@ -361,6 +368,14 @@ export const createDetector = (): Detector => {
         isBrowserVersionLessThanOrEqual,
         isBrowserVersionEqual,
         isBrowserVersionInRange,
+
+        // Browser name getter
+        getBrowserName: (): BrowserName => {
+            const ie = getIE();
+            if (ie.isIE) return "IE";
+            const browser = getBrowser();
+            return browser.browserName;
+        },
     };
 };
 
@@ -372,6 +387,7 @@ export type {
     AndroidDetectionResult,
     BrowserDetectionResult,
     BrowserDocument,
+    BrowserName,
     BrowserNavigator,
     BrowserVersion,
     BrowserWindow,

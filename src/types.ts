@@ -77,6 +77,8 @@ export interface IEDetectionResult {
     readonly isIE8Up: boolean;
 }
 
+export type BrowserName = "Chrome" | "Firefox" | "Safari" | "Edge" | "Opera" | "IE" | "unknown";
+
 export interface BrowserDetectionResult {
     readonly isFirefox: boolean;
     readonly isChrome: boolean;
@@ -84,6 +86,7 @@ export interface BrowserDetectionResult {
     readonly isEdge: boolean;
     readonly isOpera: boolean;
     readonly webp: boolean;
+    readonly browserName: BrowserName;
     readonly chromeVersion: BrowserVersion;
     readonly firefoxVersion: BrowserVersion;
     readonly safariVersion: BrowserVersion;
