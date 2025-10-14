@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trivial User Agent Detector - Demo</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--gray-800);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: var(--gray-700);
+            font-size: 1.1rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-top: 1rem;
+            background: var(--gray-100);
+            color: var(--gray-700);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--gray-100);
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            background: var(--gray-100);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            font-weight: 500;
+            color: var(--gray-700);
+            font-size: 0.9rem;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .status-true {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-false {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .raw-data {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+        }
+
+        .raw-data h2 {
+            margin-bottom: 1rem;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 1rem;
+            overflow-x: auto;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        code {
+            font-family: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace;
+            color: var(--gray-800);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 1rem 0.5rem;
+            }
+
+            header {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔍 User Agent Detector</h1>
+            <p class="subtitle">Type-safe browser & device detection</p>
+            <span class="badge">@adddog/trivial-user-agent-detector</span>
+        </header>
+
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>Detecting your device...</p>
+        </div>
+
+        <div id="content" style="display: none;">
+            <div class="grid">
+                <!-- Device Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">📱</div>
+                        <h2 class="card-title">Device</h2>
+                    </div>
+                    <div id="device-info"></div>
+                </div>
+
+                <!-- Platform Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">💻</div>
+                        <h2 class="card-title">Platform</h2>
+                    </div>
+                    <div id="platform-info"></div>
+                </div>
+
+                <!-- Browser Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">🌐</div>
+                        <h2 class="card-title">Browser</h2>
+                    </div>
+                    <div id="browser-info"></div>
+                </div>
+
+                <!-- Capabilities Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">⚡</div>
+                        <h2 class="card-title">Capabilities</h2>
+                    </div>
+                    <div id="capabilities-info"></div>
+                </div>
+
+                <!-- Display Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">🖥️</div>
+                        <h2 class="card-title">Display</h2>
+                    </div>
+                    <div id="display-info"></div>
+                </div>
+
+                <!-- Hardware Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">🔧</div>
+                        <h2 class="card-title">Hardware</h2>
+                    </div>
+                    <div id="hardware-info"></div>
+                </div>
+            </div>
+
+            <!-- Raw Data Section -->
+            <div class="raw-data">
+                <h2>📋 Complete Detection Data</h2>
+                <pre><code id="raw-json"></code></pre>
+            </div>
+        </div>
+
+        <footer>
+            <p>
+                Built with <a href="https://github.com/samelie/samelie-monorepo" target="_blank">@adddog/trivial-user-agent-detector</a>
+            </p>
+            <p style="margin-top: 0.5rem; opacity: 0.8;">
+                Test this page on different devices to see accurate detection results
+            </p>
+        </footer>
+    </div>
+
+    <script type="module">
+        // Import the library from the built dist
+        import { createDetector } from '../dist/index.js';
+
+        function createDetailRow(label, value, isBoolean = false) {
+            const row = document.createElement('div');
+            row.className = 'detail-row';
+
+            const labelEl = document.createElement('span');
+            labelEl.className = 'detail-label';
+            labelEl.textContent = label;
+
+            const valueEl = document.createElement('span');
+
+            if (isBoolean) {
+                valueEl.className = `status-badge ${value ? 'status-true' : 'status-false'}`;
+                valueEl.textContent = value ? '✓ Yes' : '✗ No';
+            } else {
+                valueEl.className = 'detail-value';
+                valueEl.textContent = value;
+            }
+
+            row.appendChild(labelEl);
+            row.appendChild(valueEl);
+            return row;
+        }
+
+        async function runDetection() {
+            try {
+                // Create detector instance
+                const detector = createDetector();
+
+                // Get all detection results
+                const device = detector.detectDevice();
+                const ios = detector.detectIOS();
+                const android = detector.detectAndroid();
+                const browser = detector.detectBrowser();
+                const ie = detector.detectIE();
+                const capabilities = detector.detectCapabilities();
+                const pixelRatio = detector.detectPixelRatio();
+                const engine = detector.detectEngine();
+                const cpu = detector.detectCPU();
+                const domFeatures = detector.detectDOMFeatures();
+
+                // Get client hints (async)
+                const clientHints = await detector.detectClientHints();
+
+                // Get complete result
+                const all = detector.detectAll();
+
+                // Populate Device Info
+                const deviceInfo = document.getElementById('device-info');
+                deviceInfo.appendChild(createDetailRow('Type', device.device));
+                deviceInfo.appendChild(createDetailRow('Mobile', device.isMobile, true));
+                deviceInfo.appendChild(createDetailRow('Tablet', device.isTablet, true));
+                deviceInfo.appendChild(createDetailRow('Desktop', device.isDesktop, true));
+
+                // Populate Platform Info
+                const platformInfo = document.getElementById('platform-info');
+                platformInfo.appendChild(createDetailRow('iOS', ios.isIOS, true));
+                if (ios.isIOS) {
+                    platformInfo.appendChild(createDetailRow('iOS Version', ios.IOSVersion || 'Unknown'));
+                    platformInfo.appendChild(createDetailRow('iPhone', ios.isIphone, true));
+                    platformInfo.appendChild(createDetailRow('iPad', ios.isIpad, true));
+                }
+                platformInfo.appendChild(createDetailRow('Android', android.isAndroid, true));
+                if (android.isAndroid) {
+                    platformInfo.appendChild(createDetailRow('Stock Browser', android.isAndroidStock, true));
+                }
+
+                // Populate Browser Info
+                const browserInfo = document.getElementById('browser-info');
+                browserInfo.appendChild(createDetailRow('Chrome', browser.isChrome, true));
+                browserInfo.appendChild(createDetailRow('Firefox', browser.isFirefox, true));
+                browserInfo.appendChild(createDetailRow('Safari', browser.isSafari, true));
+                browserInfo.appendChild(createDetailRow('Internet Explorer', ie.isIE, true));
+                if (ie.isIE) {
+                    browserInfo.appendChild(createDetailRow('IE Version', ie.IEVersion));
+                }
+                browserInfo.appendChild(createDetailRow('WebP Support', browser.webp, true));
+                browserInfo.appendChild(createDetailRow('Engine', engine.engine));
+
+                // Populate Capabilities
+                const capabilitiesInfo = document.getElementById('capabilities-info');
+                capabilitiesInfo.appendChild(createDetailRow('Touch', capabilities.hasTouch, true));
+                capabilitiesInfo.appendChild(createDetailRow('Mouse Move', capabilities.hasMouseMove, true));
+                capabilitiesInfo.appendChild(createDetailRow('History API', capabilities.hasHistory, true));
+                capabilitiesInfo.appendChild(createDetailRow('Fullscreen', capabilities.hasFullscreen, true));
+                capabilitiesInfo.appendChild(createDetailRow('Canvas', capabilities.hasCanvas, true));
+                capabilitiesInfo.appendChild(createDetailRow('WebGL', capabilities.hasWebgl, true));
+
+                // Populate Display
+                const displayInfo = document.getElementById('display-info');
+                displayInfo.appendChild(createDetailRow('Pixel Ratio', pixelRatio.pixelRatio));
+                displayInfo.appendChild(createDetailRow('Retina Display', pixelRatio.isRetina, true));
+                displayInfo.appendChild(createDetailRow('Screen Width', `${window.screen.width}px`));
+                displayInfo.appendChild(createDetailRow('Screen Height', `${window.screen.height}px`));
+                displayInfo.appendChild(createDetailRow('Viewport Width', `${window.innerWidth}px`));
+                displayInfo.appendChild(createDetailRow('Viewport Height', `${window.innerHeight}px`));
+
+                // Populate Hardware
+                const hardwareInfo = document.getElementById('hardware-info');
+                hardwareInfo.appendChild(createDetailRow('Architecture', cpu.architecture));
+                if (clientHints.supported && clientHints.data) {
+                    hardwareInfo.appendChild(createDetailRow('Platform', clientHints.data.platform || 'N/A'));
+                    hardwareInfo.appendChild(createDetailRow('Model', clientHints.data.model || 'N/A'));
+                    if (clientHints.data.brands && clientHints.data.brands.length > 0) {
+                        const brands = clientHints.data.brands.map(b => `${b.brand} ${b.version}`).join(', ');
+                        hardwareInfo.appendChild(createDetailRow('Brands', brands));
+                    }
+                }
+
+                // Show raw JSON
+                document.getElementById('raw-json').textContent = JSON.stringify({
+                    ...all,
+                    clientHints: clientHints.data,
+                    screen: {
+                        width: window.screen.width,
+                        height: window.screen.height,
+                        availWidth: window.screen.availWidth,
+                        availHeight: window.screen.availHeight,
+                    },
+                    viewport: {
+                        width: window.innerWidth,
+                        height: window.innerHeight,
+                    }
+                }, null, 2);
+
+                // Hide loading, show content
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('content').style.display = 'block';
+
+            } catch (error) {
+                console.error('Detection error:', error);
+                document.getElementById('loading').innerHTML = `
+                    <p style="color: #fee2e2;">Error detecting device: ${error.message}</p>
+                `;
+            }
+        }
+
+        // Run detection when page loads
+        runDetection();
+    </script>
+</body>
+</html>
