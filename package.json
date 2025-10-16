@@ -68,7 +68,7 @@
     "knip": "knip",
     "dev": "tsx src/cli.ts",
     "demo": "python3 -m http.server 8765",
-    "release": "bumpp --yes --no-push --release patch",
+    "release": "bumpp --yes --no-push --no-tag --release patch",
     "prepublishOnly": "pnpm run test && pnpm run lint && pnpm run types && pnpm run build",
     "prepack": "pnpm run prepublishOnly",
     "build:watch": "unbuild --watch",
