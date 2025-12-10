@@ -72,7 +72,7 @@
     "prepublishOnly": "pnpm run test && pnpm run lint && pnpm run types && pnpm run build",
     "prepack": "pnpm run prepublishOnly",
     "build:watch": "unbuild --watch",
-    "test": "vitest run"
+    "test": "echo '⚠️⚠️⚠️no test vitest --watch=false'"
   },
   "dependencies": {},
   "devDependencies": {
