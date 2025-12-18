@@ -45,8 +45,8 @@ import type {
     IEDetectionResult,
     IOSDetectionResult,
     PixelRatioResult,
-} from "./types.ts";
-import { detectAndroid } from "./android-detection.ts";
+} from "./types";
+import { detectAndroid } from "./android-detection";
 import {
     detectBrowser,
     detectIE,
@@ -56,17 +56,17 @@ import {
     isBrowserVersionInRange,
     isBrowserVersionLessThan,
     isBrowserVersionLessThanOrEqual,
-} from "./browser-detection.ts";
+} from "./browser-detection";
 import {
     detectCapabilitiesFromEnvironment,
     detectDOMFeaturesFromEnvironment,
     detectPixelRatioFromEnvironment,
-} from "./capability-detection.ts";
-import { detectClientHintsAsync } from "./client-hints.ts";
-import { detectCPUFromEnvironment } from "./cpu-detection.ts";
-import { detectDevice } from "./device-detection.ts";
-import { detectEngineFromEnvironment } from "./engine-detection.ts";
-import { detectIOS } from "./ios-detection.ts";
+} from "./capability-detection";
+import { detectClientHintsAsync } from "./client-hints";
+import { detectCPUFromEnvironment } from "./cpu-detection";
+import { detectDevice } from "./device-detection";
+import { detectEngineFromEnvironment } from "./engine-detection";
+import { detectIOS } from "./ios-detection";
 
 /**
  * Gets user agent string safely
@@ -413,4 +413,4 @@ export type {
     RenderingEngine,
     TransitionEndEvent,
     VisibilityChangeEvent,
-} from "./types.ts";
+} from "./types";
