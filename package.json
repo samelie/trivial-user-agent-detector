@@ -75,21 +75,21 @@
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "types": "tsc -p tsconfig.typecheck.json",
-    "knip": "knip",
     "dev": "tsx src/cli.ts",
     "demo": "python3 -m http.server 8765",
     "release": "bumpp --yes --no-push --no-tag --release patch",
     "prepublishOnly": "pnpm run test && pnpm run lint && pnpm run types && pnpm run build",
     "prepack": "pnpm run prepublishOnly",
     "build:watch": "unbuild --watch",
-    "test": "echo '⚠️⚠️⚠️no test vitest --watch=false'"
+    "test": "echo '⚠️⚠️⚠️no test vitest --watch=false'",
+    "knip": "knip"
   },
   "dependencies": {},
   "devDependencies": {
     "@adddog/build-configs": "workspace:*",
     "@adddog/config-defaults": "workspace:*",
     "@adddog/eslint": "workspace:*",
-    "bumpp": "^10.3.2",
+    "bumpp": "^10.4.0",
     "eslint": "^9.39.2",
     "typescript": "^5.9.3",
     "unbuild": "^3.6.1"
