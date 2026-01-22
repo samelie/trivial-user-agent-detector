@@ -84,13 +84,11 @@
     "test": "echo '⚠️⚠️⚠️no test vitest --watch=false'",
     "knip": "knip"
   },
-  "dependencies": {},
   "devDependencies": {
-    "@adddog/build-configs": "workspace:*",
-    "@adddog/config-defaults": "workspace:*",
-    "@adddog/eslint": "workspace:*",
     "bumpp": "^10.4.0",
     "eslint": "^9.39.2",
+    "knip": "^5.82.1",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "unbuild": "^3.6.1"
   },

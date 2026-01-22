@@ -5,7 +5,7 @@ import { defineKnipConfig } from "../../monorepo-scripts/knip-defaults.js";
 export default defineKnipConfig({
     entry: ["src/index.ts"],
     project: ["src/**/*.ts"],
-    ignoreDependencies: ["vitest", "@vitest/coverage-v8", "vitest/config"],
+    ignoreDependencies: ["vitest", "@vitest/coverage-v8"],
     ignoreBinaries: ["tsup", "python3"],
     ignore: ["tsup.config.ts", "test/**"],
     includeEntryExports: true,
