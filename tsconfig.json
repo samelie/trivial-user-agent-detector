@@ -31,23 +31,7 @@
         "noUnusedParameters": true,
         "noFallthroughCasesInSwitch": true,
         "noUncheckedSideEffectImports": true,
-        "paths": {
-            "@adddog/build-configs/*": [
-                "./packages/publish/src/*",
-                "../publish/src/*",
-                "../packages/publish/src/*",
-                "../../packages/publish/src/*",
-                "../../../packages/publish/src/*"
-            ],
-            "@adddog/eslint": [
-                "./packages/eslint",
-                "../eslint",
-                "../packages/eslint",
-                "../../packages/eslint",
-                "../../../packages/eslint",
-                "../../../../packages/eslint"
-            ]
-        },
+        "paths": {},
         "types": [
             "node"
         ]
