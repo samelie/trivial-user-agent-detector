@@ -5,9 +5,20 @@ import { defineKnipConfig } from "@adddog/monorepo-consistency";
 export default defineKnipConfig({
     entry: ["src/index.ts"],
     project: ["src/**/*.ts"],
+    // WHY: used in vitest.config.ts but not in devDeps (hoisted)
     ignoreDependencies: ["vitest", "@vitest/coverage-v8"],
-    ignoreBinaries: ["tsup", "python3"],
-    ignore: ["tsup.config.ts", "test/**"],
+    ignoreBinaries: [
+        // WHY: used in build script but not in devDeps (hoisted)
+        "tsup",
+        // WHY: used in demo script
+        "python3",
+    ],
+    ignore: [
+        // WHY: tsup build config
+        "tsup.config.ts",
+        // WHY: test files not referenced from src
+        "test/**",
+    ],
     includeEntryExports: true,
     rules: {
         exports: "off",
