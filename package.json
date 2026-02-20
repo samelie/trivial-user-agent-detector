@@ -81,7 +81,7 @@
     "prepublishOnly": "pnpm run test && pnpm run lint && pnpm run types && pnpm run build",
     "prepack": "pnpm run prepublishOnly",
     "build:watch": "unbuild --watch",
-    "test": "echo '⚠️⚠️⚠️no test vitest --watch=false'",
+    "test": "vitest --watch=false",
     "knip": "knip"
   },
   "devDependencies": {
@@ -92,7 +92,8 @@
     "tsup": "^8.5.0",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
-    "unbuild": "^3.6.1"
+    "unbuild": "^3.6.1",
+    "vitest": "^4.0.18"
   },
   "engines": {
     "node": ">= 22",
