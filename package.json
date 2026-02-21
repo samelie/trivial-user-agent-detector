@@ -82,7 +82,8 @@
     "prepack": "pnpm run prepublishOnly",
     "build:watch": "unbuild --watch",
     "test": "vitest --watch=false",
-    "knip": "knip"
+    "knip": "knip",
+    "version:patch": "npm version patch --no-git-tag-version"
   },
   "devDependencies": {
     "@adddog/build-configs": "^0.0.5",
