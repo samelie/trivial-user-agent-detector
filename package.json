@@ -4,69 +4,38 @@
   "type": "module",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs",
-      "default": "./dist/index.js"
+      "import": "./src/index.ts"
     },
     "./android-detection": {
-      "types": "./dist/android-detection.d.ts",
-      "import": "./dist/android-detection.js",
-      "require": "./dist/android-detection.cjs",
-      "default": "./dist/android-detection.js"
+      "import": "./src/android-detection.ts"
     },
     "./browser-detection": {
-      "types": "./dist/browser-detection.d.ts",
-      "import": "./dist/browser-detection.js",
-      "require": "./dist/browser-detection.cjs",
-      "default": "./dist/browser-detection.js"
+      "import": "./src/browser-detection.ts"
     },
     "./capability-detection": {
-      "types": "./dist/capability-detection.d.ts",
-      "import": "./dist/capability-detection.js",
-      "require": "./dist/capability-detection.cjs",
-      "default": "./dist/capability-detection.js"
+      "import": "./src/capability-detection.ts"
     },
     "./client-hints": {
-      "types": "./dist/client-hints.d.ts",
-      "import": "./dist/client-hints.js",
-      "require": "./dist/client-hints.cjs",
-      "default": "./dist/client-hints.js"
+      "import": "./src/client-hints.ts"
     },
     "./cpu-detection": {
-      "types": "./dist/cpu-detection.d.ts",
-      "import": "./dist/cpu-detection.js",
-      "require": "./dist/cpu-detection.cjs",
-      "default": "./dist/cpu-detection.js"
+      "import": "./src/cpu-detection.ts"
     },
     "./device-detection": {
-      "types": "./dist/device-detection.d.ts",
-      "import": "./dist/device-detection.js",
-      "require": "./dist/device-detection.cjs",
-      "default": "./dist/device-detection.js"
+      "import": "./src/device-detection.ts"
     },
     "./engine-detection": {
-      "types": "./dist/engine-detection.d.ts",
-      "import": "./dist/engine-detection.js",
-      "require": "./dist/engine-detection.cjs",
-      "default": "./dist/engine-detection.js"
+      "import": "./src/engine-detection.ts"
     },
     "./ios-detection": {
-      "types": "./dist/ios-detection.d.ts",
-      "import": "./dist/ios-detection.js",
-      "require": "./dist/ios-detection.cjs",
-      "default": "./dist/ios-detection.js"
+      "import": "./src/ios-detection.ts"
     },
     "./types": {
-      "types": "./dist/types.d.ts",
-      "import": "./dist/types.js",
-      "require": "./dist/types.cjs",
-      "default": "./dist/types.js"
+      "import": "./src/types.ts"
     }
   },
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
   "files": [
     "dist"
   ],
@@ -103,6 +72,70 @@
     "npm": ">= 11"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js",
+        "require": "./dist/index.cjs",
+        "default": "./dist/index.js"
+      },
+      "./android-detection": {
+        "types": "./dist/android-detection.d.ts",
+        "import": "./dist/android-detection.js",
+        "require": "./dist/android-detection.cjs",
+        "default": "./dist/android-detection.js"
+      },
+      "./browser-detection": {
+        "types": "./dist/browser-detection.d.ts",
+        "import": "./dist/browser-detection.js",
+        "require": "./dist/browser-detection.cjs",
+        "default": "./dist/browser-detection.js"
+      },
+      "./capability-detection": {
+        "types": "./dist/capability-detection.d.ts",
+        "import": "./dist/capability-detection.js",
+        "require": "./dist/capability-detection.cjs",
+        "default": "./dist/capability-detection.js"
+      },
+      "./client-hints": {
+        "types": "./dist/client-hints.d.ts",
+        "import": "./dist/client-hints.js",
+        "require": "./dist/client-hints.cjs",
+        "default": "./dist/client-hints.js"
+      },
+      "./cpu-detection": {
+        "types": "./dist/cpu-detection.d.ts",
+        "import": "./dist/cpu-detection.js",
+        "require": "./dist/cpu-detection.cjs",
+        "default": "./dist/cpu-detection.js"
+      },
+      "./device-detection": {
+        "types": "./dist/device-detection.d.ts",
+        "import": "./dist/device-detection.js",
+        "require": "./dist/device-detection.cjs",
+        "default": "./dist/device-detection.js"
+      },
+      "./engine-detection": {
+        "types": "./dist/engine-detection.d.ts",
+        "import": "./dist/engine-detection.js",
+        "require": "./dist/engine-detection.cjs",
+        "default": "./dist/engine-detection.js"
+      },
+      "./ios-detection": {
+        "types": "./dist/ios-detection.d.ts",
+        "import": "./dist/ios-detection.js",
+        "require": "./dist/ios-detection.cjs",
+        "default": "./dist/ios-detection.js"
+      },
+      "./types": {
+        "types": "./dist/types.d.ts",
+        "import": "./dist/types.js",
+        "require": "./dist/types.cjs",
+        "default": "./dist/types.js"
+      }
+    },
+    "main": "./dist/index.cjs",
+    "types": "./dist/index.d.ts"
   }
 }
