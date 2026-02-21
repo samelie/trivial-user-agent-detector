@@ -86,6 +86,7 @@
   },
   "devDependencies": {
     "@adddog/build-configs": "^0.0.5",
+    "@adddog/monorepo-consistency": "workspace:*",
     "bumpp": "^10.4.1",
     "eslint": "^10.0.0",
     "knip": "^5.83.1",
