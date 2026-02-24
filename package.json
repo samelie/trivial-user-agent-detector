@@ -1,6 +1,6 @@
 {
   "name": "@adddog/trivial-user-agent-detector",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "type": "module",
   "exports": {
     ".": {
@@ -55,12 +55,12 @@
     "version:patch": "npm version patch --no-git-tag-version"
   },
   "devDependencies": {
-    "@adddog/build-configs": "^0.0.5",
+    "@adddog/build-configs": "^0.0.6",
     "@adddog/monorepo-consistency": "workspace:*",
     "bumpp": "^10.4.1",
-    "eslint": "^10.0.0",
-    "knip": "^5.83.1",
-    "tsup": "^8.5.0",
+    "eslint": "^10.0.2",
+    "knip": "^5.85.0",
+    "tsup": "^8.5.1",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "unbuild": "^3.6.1",
