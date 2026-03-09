@@ -379,9 +379,6 @@ export const createDetector = (): Detector => {
     };
 };
 
-// Default export - the factory function
-export default createDetector;
-
 // Re-export all types for convenience
 export type {
     AndroidDetectionResult,
