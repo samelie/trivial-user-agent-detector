@@ -4,46 +4,53 @@
 
 import type { CPUArchitecture, CPUDetectionResult } from "./types.ts";
 
+const AMD64_RE = /\b(amd64|x64|x86[-_]?64|wow64|win64)\b/i;
+const IA32_RE = /\b(ia32|i[3-6]86|x86|win32)\b/i;
+const ARM64_RE = /\b(aarch64|armv?[89]e?l?|arm_?64)\b/i;
+const ARMHF_RE = /\barmv[67](?:ht?n?[fl]p?|[hl])\b/i;
+const ARM_RE = /\barm\b/i;
+const SPARC_RE = /\b(?:sparc|sun4u|sunos)\b/i;
+
 /**
  * Detects AMD64/x86_64 architecture
  */
 const detectAMD64 = (userAgent: string): boolean => {
-    return /\b(amd64|x64|x86[-_]?64|wow64|win64)\b/i.test(userAgent);
+    return AMD64_RE.test(userAgent);
 };
 
 /**
  * Detects IA32/x86 architecture
  */
 const detectIA32 = (userAgent: string): boolean => {
-    return /\b(ia32|i[3-6]86|x86|win32)\b/i.test(userAgent);
+    return IA32_RE.test(userAgent);
 };
 
 /**
  * Detects ARM64 architecture
  */
 const detectARM64 = (userAgent: string): boolean => {
-    return /\b(aarch64|armv?[89]e?l?|arm_?64)\b/i.test(userAgent);
+    return ARM64_RE.test(userAgent);
 };
 
 /**
  * Detects ARMHF (ARM Hard Float) architecture
  */
 const detectARMHF = (userAgent: string): boolean => {
-    return /\barmv[67](?:ht?n?[fl]p?|[hl])\b/i.test(userAgent);
+    return ARMHF_RE.test(userAgent);
 };
 
 /**
  * Detects ARM architecture (general)
  */
 const detectARM = (userAgent: string): boolean => {
-    return /\barm\b/i.test(userAgent);
+    return ARM_RE.test(userAgent);
 };
 
 /**
  * Detects SPARC architecture
  */
 const detectSPARC = (userAgent: string): boolean => {
-    return /\b(?:sparc|sun4u|sunos)\b/i.test(userAgent);
+    return SPARC_RE.test(userAgent);
 };
 
 /**

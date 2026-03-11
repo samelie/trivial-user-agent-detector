@@ -4,6 +4,20 @@
 
 import type { BrowserDetectionResult, BrowserName, BrowserVersion, IEDetectionResult, IEVersion } from "./types.ts";
 
+const MSIE_RE = /MSIE (\d[\d.]*)/;
+const TRIDENT_RE = /Trident\/.*rv:(\d[\d.]*)/;
+const CHROME_VERSION_RE = /\bChrome\/(\d+)/i;
+const FIREFOX_VERSION_RE = /\bFirefox\/(\d+)/i;
+const SAFARI_VERSION_RE = /\bVersion\/(\d+)/i;
+const SAFARI_RE = /Safari/i;
+const EDG_VERSION_RE = /\bEdg\/(\d+)/i;
+const EDGE_VERSION_RE = /\bEdge\/(\d+)/i;
+const OPR_VERSION_RE = /\bOPR\/(\d+)/i;
+const OPERA_VERSION_RE = /\bOpera[\s/](\d+)/i;
+const EDGE_DETECT_RE = /\b(?:Edg|Edge)\//i;
+const OPERA_DETECT_RE = /\b(?:OPR|Opera)\//i;
+const SAFARI_DETECT_RE = /^(?:(?!chrome).)*safari/i;
+
 /**
  * Detects Internet Explorer version
  * Returns -1 if not IE
@@ -15,8 +29,7 @@ const detectIEVersion = (
     let version: IEVersion = -1;
 
     if (appName === "Microsoft Internet Explorer") {
-        const msieRegex = /MSIE (\d[\d.]*)/;
-        const match = msieRegex.exec(userAgent);
+        const match = MSIE_RE.exec(userAgent);
 
         if (match && match[1] !== undefined) {
             const parsed = Number.parseFloat(match[1]);
@@ -25,8 +38,7 @@ const detectIEVersion = (
             }
         }
     } else if (appName === "Netscape") {
-        const tridentRegex = /Trident\/.*rv:(\d[\d.]*)/;
-        const match = tridentRegex.exec(userAgent);
+        const match = TRIDENT_RE.exec(userAgent);
 
         if (match && match[1] !== undefined) {
             const parsed = Number.parseFloat(match[1]);
@@ -67,7 +79,7 @@ const createIEDetectionResult = (version: IEVersion): IEDetectionResult => {
  * Extracts Chrome version from user agent
  */
 const extractChromeVersion = (userAgent: string): BrowserVersion => {
-    const match = /\bChrome\/(\d+)/i.exec(userAgent);
+    const match = CHROME_VERSION_RE.exec(userAgent);
     if (match && match[1] !== undefined) {
         const version = Number.parseInt(match[1], 10);
         return Number.isNaN(version) ? false : version;
@@ -79,7 +91,7 @@ const extractChromeVersion = (userAgent: string): BrowserVersion => {
  * Extracts Firefox version from user agent
  */
 const extractFirefoxVersion = (userAgent: string): BrowserVersion => {
-    const match = /\bFirefox\/(\d+)/i.exec(userAgent);
+    const match = FIREFOX_VERSION_RE.exec(userAgent);
     if (match && match[1] !== undefined) {
         const version = Number.parseInt(match[1], 10);
         return Number.isNaN(version) ? false : version;
@@ -91,8 +103,8 @@ const extractFirefoxVersion = (userAgent: string): BrowserVersion => {
  * Extracts Safari version from user agent
  */
 const extractSafariVersion = (userAgent: string): BrowserVersion => {
-    const match = /\bVersion\/(\d+)/i.exec(userAgent);
-    if (match && match[1] !== undefined && /Safari/i.test(userAgent)) {
+    const match = SAFARI_VERSION_RE.exec(userAgent);
+    if (match && match[1] !== undefined && SAFARI_RE.test(userAgent)) {
         const version = Number.parseInt(match[1], 10);
         return Number.isNaN(version) ? false : version;
     }
@@ -104,14 +116,14 @@ const extractSafariVersion = (userAgent: string): BrowserVersion => {
  */
 const extractEdgeVersion = (userAgent: string): BrowserVersion => {
     // Chromium Edge: Edg/119.0.0.0
-    let match = /\bEdg\/(\d+)/i.exec(userAgent);
+    let match = EDG_VERSION_RE.exec(userAgent);
     if (match && match[1] !== undefined) {
         const version = Number.parseInt(match[1], 10);
         return Number.isNaN(version) ? false : version;
     }
 
     // Legacy Edge: Edge/18.17763
-    match = /\bEdge\/(\d+)/i.exec(userAgent);
+    match = EDGE_VERSION_RE.exec(userAgent);
     if (match && match[1] !== undefined) {
         const version = Number.parseInt(match[1], 10);
         return Number.isNaN(version) ? false : version;
@@ -125,14 +137,14 @@ const extractEdgeVersion = (userAgent: string): BrowserVersion => {
  */
 const extractOperaVersion = (userAgent: string): BrowserVersion => {
     // Modern Opera: OPR/105.0.0.0
-    let match = /\bOPR\/(\d+)/i.exec(userAgent);
+    let match = OPR_VERSION_RE.exec(userAgent);
     if (match && match[1] !== undefined) {
         const version = Number.parseInt(match[1], 10);
         return Number.isNaN(version) ? false : version;
     }
 
     // Old Opera: Opera/9.80 or Opera 12
-    match = /\bOpera[\s/](\d+)/i.exec(userAgent);
+    match = OPERA_VERSION_RE.exec(userAgent);
     if (match && match[1] !== undefined) {
         const version = Number.parseInt(match[1], 10);
         return Number.isNaN(version) ? false : version;
@@ -175,10 +187,10 @@ export const detectBrowser = (
     vendor?: string,
 ): BrowserDetectionResult => {
     const isFirefox = userAgent.toLowerCase().includes("firefox");
-    const isEdge = /\b(?:Edg|Edge)\//i.test(userAgent);
-    const isOpera = /\b(?:OPR|Opera)\//i.test(userAgent);
+    const isEdge = EDGE_DETECT_RE.test(userAgent);
+    const isOpera = OPERA_DETECT_RE.test(userAgent);
     const isChrome = detectChrome(chrome, vendor) && !isEdge && !isOpera;
-    const isSafari = /^(?:(?!chrome).)*safari/i.test(userAgent) && !isEdge && !isOpera;
+    const isSafari = SAFARI_DETECT_RE.test(userAgent) && !isEdge && !isOpera;
     const webp = (isChrome || isEdge || isOpera) && !isSafari;
 
     // Determine browser name

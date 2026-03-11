@@ -4,6 +4,9 @@
 
 import type { AndroidDetectionResult } from "./types.ts";
 
+const WEBKIT_VERSION_RE = /AppleWebKit\/([\d.]+)/;
+const ANDROID_RE = /Android/i;
+
 /**
  * Extracts Android version from user agent string
  */
@@ -23,8 +26,7 @@ const extractAndroidVersion = (userAgent: string): number | null => {
  * Extracts AppleWebKit version from user agent string
  */
 const extractWebKitVersion = (userAgent: string): number | null => {
-    const webKitRegex = /AppleWebKit\/([\d.]+)/;
-    const match = webKitRegex.exec(userAgent);
+    const match = WEBKIT_VERSION_RE.exec(userAgent);
 
     if (!match || match[1] === undefined) {
         return null;
@@ -53,7 +55,7 @@ const detectAndroidStock = (
  * Pure function to detect all Android-related information
  */
 export const detectAndroid = (userAgent: string): AndroidDetectionResult => {
-    const isAndroid = /Android/i.test(userAgent);
+    const isAndroid = ANDROID_RE.test(userAgent);
 
     const androidVersion = extractAndroidVersion(userAgent);
     const isAndroidOld = isAndroid && androidVersion !== null && androidVersion < 4;
