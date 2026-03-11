@@ -6,12 +6,12 @@ export default defineKnipConfig({
     entry: ["src/index.ts"],
     project: ["src/**/*.ts"],
 }, {
-    "ignoreDependencies": [
+    ignoreDependencies: [
         "@adddog/monorepo-consistency",
-        "@vitest/coverage-v8"
+        "@vitest/coverage-v8",
     ],
-    "ignoreBinaries": [
+    ignoreBinaries: [
         "knip",
-        "python3"
-    ]
+        "python3",
+    ],
 });
