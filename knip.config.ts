@@ -7,6 +7,7 @@ export default defineKnipConfig({
     project: ["src/**/*.ts"],
 }, {
     ignoreDependencies: [
+        "@adddog/build-configs",
         "@adddog/monorepo-consistency",
         "@vitest/coverage-v8",
     ],
