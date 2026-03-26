@@ -47,7 +47,6 @@
     "dev": "tsx src/cli.ts",
     "demo": "python3 -m http.server 8765",
     "release": "bumpp --yes --no-push --no-tag --release patch",
-    "prepublishOnly": "pnpm run test && pnpm run types && pnpm run build",
     "prepack": "pnpm run prepublishOnly",
     "build:watch": "unbuild --watch",
     "test": "vitest --watch=false",
@@ -137,5 +136,6 @@
     },
     "main": "./dist/index.cjs",
     "types": "./dist/index.d.ts"
-  }
+  },
+  "private": true
 }
