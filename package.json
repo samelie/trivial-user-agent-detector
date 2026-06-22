@@ -58,12 +58,12 @@
     "@adddog/monorepo-consistency": "workspace:*",
     "@typescript/native-preview": "beta",
     "bumpp": "^11.1.0",
-    "eslint": "^10.4.1",
-    "knip": "^6.15.0",
+    "eslint": "^10.5.0",
+    "knip": "^6.17.1",
     "tsup": "^8.5.1",
     "tsx": "^4.22.4",
     "unbuild": "^3.6.1",
-    "vitest": "^4.1.8"
+    "vitest": "^4.1.9"
   },
   "engines": {
     "node": ">= 22",
